@@ -1,19 +1,16 @@
-node('remote') {
-  git url: 'https://github.com/jenkinsci/parallel-test-executor-plugin-sample.git'
-  archive 'pom.xml, src/'
+node {
+	git 'https://github.com/qinqon/jenkins-pipeline.git'
+	parallel cba_restore: {
+		echo "Restoring CBA"
+        	sh "sleep 10"
+    	}, compile_ft: {
+		echo "Compiling FT"
+        	sh "sleep 5"
+	}, epb_delivery: {
+		echo "Packaging vSAPC"
+        	sh "sleep 5"
+    	},
+	echo "Deploying vSAPC"
+  	sh "sleep 5"
+    	failFast: true
 }
-def splits = splitTests([$class: 'CountDrivenParallelism', size: 2])
-def branches = [:]
-for (int i = 0; i < splits.size(); i++) {
-  def exclusions = splits.get(i);
-  branches["split${i}"] = {
-    node('remote') {
-      sh 'rm -rf *'
-      unarchive mapping: ['pom.xml' : '.', 'src/' : '.']
-      writeFile file: 'exclusions.txt', text: exclusions.join("\n")
-      sh "${tool 'M3'}/bin/mvn -B -Dmaven.test.failure.ignore test"
-      step([$class: 'JUnitResultArchiver', testResults: 'target/surefire-reports/*.xml'])
-    }
-  }
-}
-parallel branches
