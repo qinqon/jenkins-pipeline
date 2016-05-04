@@ -25,8 +25,22 @@ node("remote") {
         echo "END compile_ft"
     },
     failFast: true
-    stage 'Run FT'
-    echo "BEGIN run_ft"
-    sleep 50
-    echo "END run_ft"
+    node("remote") {
+       stage 'Run OAM FT'
+       echo "BEGIN run_oam_ft"
+       sleep 10
+       echo "END run_oam_ft"
+    }
+    node("remote") {
+       stage 'Run MOBILE1 FT'
+       echo "BEGIN run_mobile1_ft"
+       sleep 10
+       echo "END run_mobile1_ft"
+    }
+    node("remote") {
+       stage 'Run MOBILE2 FT'
+       echo "BEGIN run_mobile2_ft"
+       sleep 10
+       echo "END run_mobile2_ft"
+    }
 }
