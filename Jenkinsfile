@@ -19,17 +19,17 @@ node("remote") {
     {
        node("remote") {
           stage 'Run OAM FT'
-          sleep 10
+          sleep 120
        }
     }, run_mobile1: {
        node("remote") {
           stage 'Run MOBILE1 FT'
-          sleep 10
+          sleep 120
        }
     }, run_mobile2: {
        node("remote") {
           stage 'Run MOBILE2 FT'
-          sleep 10
+          sleep 120
        }
     }
 }
