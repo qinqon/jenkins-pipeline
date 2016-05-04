@@ -1,4 +1,4 @@
-node {
+node("remote") {
     git 'https://github.com/qinqon/jenkins-pipeline.git'
     parallel restore_and_deploy: {
         parallel restore : {
